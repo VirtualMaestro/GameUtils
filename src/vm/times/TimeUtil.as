@@ -10,7 +10,8 @@ package vm.times
 	{
 
 		/**
-		 * Returns timer instance. If autoStart == true, timer starts immediately after creation.
+		 * Returns timer instance.
+		 * If autoStart == true, timer starts immediately after creation.
 		 */
 		static public function getTimer(listener:Function, delay:uint = 1000, repeatCount:uint = 0, autoStart:Boolean = true):Timer
 		{
