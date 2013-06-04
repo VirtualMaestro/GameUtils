@@ -72,6 +72,14 @@ package vm.math.numbers
 			return n != n;
 		}
 
+		/**
+		 * Проверяет являются ли два заданных числа одинаковыми до заданной точности.
+		 */
+		static public function isEqual(p_val1:Number, p_val2:Number, p_precis:Number = 0.001):Boolean
+		{
+			return Math.abs(p_val1 - p_val2) < p_precis;
+		}
+
 		////////
 		static private var periodTable:Array = [];
 
