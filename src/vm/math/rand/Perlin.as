@@ -96,7 +96,7 @@ package vm.math.rand
 		static private var _isInitSeed:Boolean = false;
 
 		/**
-		 * Returns number by given params.
+		 * Returns number on range [0; 1] by given params.
 		 */
 		public static function noise(p_x:Number, p_y:Number = 1, p_z:Number = 1):Number
 		{
