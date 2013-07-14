@@ -20,13 +20,15 @@ package vm.math.rand
 			if (val != 0) _pSeedUint = val;
 		}
 
+		/**
+		 */
 		static public function get seed():uint
 		{
 			return _pSeedUint;
 		}
 
 		/**
-		 * Возвращает целое число в заданном диапазоне
+		 * Method returns rand integer number in given range.
 		 */
 		static public function getIntRange(min:int, max:int):int
 		{
@@ -35,7 +37,7 @@ package vm.math.rand
 		}
 
 		/**
-		 * Возвращает дробное число в заданном диапазоне
+		 * Method returns rand float number in given range.
 		 */
 		static public function getFloatRange(min:Number, max:Number):Number
 		{
@@ -44,7 +46,7 @@ package vm.math.rand
 		}
 
 		/**
-		 *  Метод возвращает случайное число на промежутке [-1; 1]
+		 *  Method returns rand float number on range (-1 > x < 1)
 		 */
 		static public function getFloat():Number
 		{
@@ -56,7 +58,7 @@ package vm.math.rand
 		}
 
 		/**
-		 * Метод возвращает случайное число на промежутке [0; 1]
+		 * Method returns rand float number on range (0 < x < 1)
 		 */
 		static public function getFloatUnsign():Number
 		{
@@ -64,40 +66,47 @@ package vm.math.rand
 			_pSeedUint ^= (_pSeedUint >>> 35);
 			_pSeedUint ^= (_pSeedUint << 4);
 
-			return (_pSeedUint * MAX_RATIO_UINT);
+			return _pSeedUint * MAX_RATIO_UINT;
 		}
 
 		//
 		static private var _phase:Boolean = true;
-		static private var V1:Number, V2:Number, R:Number;
+		static private var _v1:Number, _v2:Number, _r:Number, _m:Number;
 
 		/**
-		 * Returns random number between 0 and 1. (Gaussian distribution).
+		 * Returns random number by Gaussian distribution.
+		 * p_mean - mean
+		 * p_sigma - standard deviation
+		 *
+		 * 99.7% returned number lies on range [-3;3], so if need strictly in some range need to reject numbers out of range [-3;3].
+		 *
+		 * If need to get in range (-1;1), should to set p_mean = 0, p_sigma = 1.0/3.0
+		 * If need to get in range (0;1), should to set p_mean = 0.5, p_sigma = 0.5/3.0
 		 */
-		static public function getFloatG():Number
+		static public function getGaussian(p_mean:Number = 0.0, p_sigma:Number = 1.0):Number
 		{
-			var Z:Number;
+			var z:Number;
 
 			if(_phase)
 			{
 				do
 				{
-					V1 = getFloatUnsign();
-					V2 = getFloatUnsign();
-					V1 = V1*2 - 1;
-					V2 = V2*2 - 1;
-					R = V1*V1 + V2*V2;
+					_v1 = getFloatUnsign();
+					_v2 = getFloatUnsign();
+					_v1 = _v1*2 - 1;
+					_v2 = _v2*2 - 1;
+					_r = _v1*_v1 + _v2*_v2;
 				}
-				while(R >= 1 || R <= 0);
+				while(_r >= 1 || _r == 0);
 
-				Z = V1 * Math.sqrt(-2 * Math.log(R) / R);
+				_m = Math.sqrt(-2 * Math.log(_r) / _r);
+				z = _v1 * _m;
 			}
-			else Z = V2 * Math.sqrt(-2 * Math.log(R) / R);
+			else z = _v2 * _m;
 
-			if (Z > 1 || Z < 0) Z = Math.abs(Z % 1);
 			_phase = !_phase;
 
-			return Z;
+			return z*p_sigma + p_mean;
 		}
 	}
 }
