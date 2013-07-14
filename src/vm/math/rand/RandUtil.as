@@ -75,10 +75,11 @@ package vm.math.rand
 
 		/**
 		 * Returns random number by Gaussian distribution.
+		 * Returns number between [-infinity; +infinity], but 99.7% returned number lies on range [-3;3]
 		 * p_mean - mean
 		 * p_sigma - standard deviation
 		 *
-		 * 99.7% returned number lies on range [-3;3], so if need strictly in some range need to reject numbers out of range [-3;3].
+		 * If need strictly in some range need to reject numbers out of range [-3;3].
 		 *
 		 * If need to get in range (-1;1), should to set p_mean = 0, p_sigma = 1.0/3.0
 		 * If need to get in range (0;1), should to set p_mean = 0.5, p_sigma = 0.5/3.0
