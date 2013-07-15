@@ -15,9 +15,9 @@ package vm.math.rand
 	import flash.display.BitmapData;
 
 	/**
-	 * Implementation of 3D perlin noise.
+	 * Implementation of 3D perlin noise3d.
 	 */
-	final public class Perlin
+	final public class Noise
 	{
 		/**
 		 */
@@ -95,10 +95,88 @@ package vm.math.rand
 		static private var _isInitFrequencyPersistence:Boolean = false;
 		static private var _isInitSeed:Boolean = false;
 
+		static private const B:int = 0x100;
+		static private const BM:int = 0xff;
+		static private const N:int = 0x1000;
+
+		static private var _isNoise1dInit:Boolean = false;
+		static private var _g1:Vector.<Number>;
+
+		/**
+		 */
+		static public function perlin1d(p_value:Number):Number
+		{
+			if (!_isNoise1dInit) initPerlin1d();
+
+			var t:Number = p_value + N;
+			var bx0:int = int(t) & BM;
+			var bx1:int = (bx0+1) & BM;
+			var rx0:Number = t - int(t);
+			var rx1:Number = rx0 - 1.0;
+			var sx:Number = rx0 * rx0 * (3.0 - 2.0 * rx0);
+            var u:Number = rx0 * _g1[ p[ bx0 ] ];
+            var v:Number = rx1 * _g1[ p[ bx1 ] ];
+
+            return u + sx * (v - u);
+		}
+
+		/**
+		 */
+		static private function initPerlin1d():void
+		{
+			_isNoise1dInit = true;
+
+			_g1 = new <Number>[];
+			for (var i:int = 0 ; i < B ; i++)
+			{
+				_g1[i] = Number(RandUtil.getIntRange(0, B + B) - B) / B;
+			}
+
+			for (i = 0 ; i < B + 2 ; i++)
+			{
+                _g1[B + i] = _g1[i];
+            }
+		}
+
+		/**
+		 * Simplex noise for 1d.
+		 * Returns value on range [-1;1]
+		 */
+		public static function simplex1d(x:Number):Number
+		{
+			var i0:int = Math.floor(x);
+			var i1:int = i0 + 1;
+			var x0:Number = x - i0;
+			var x1:Number = x0 - 1.0;
+			var t0:Number = 1.0 - x0*x0;
+			t0 *= t0;
+
+			var n0:Number = t0 * t0 * grad(p[i0 & 0xff], x0);
+			var t1:Number = 1.0 - x1*x1;
+			t1 *= t1;
+
+			var n1:Number = t1 * t1 * grad(p[i1 & 0xff], x1);
+			// The maximum value of this noise is 8*(3/4)^4 = 2.53125
+			// A factor of 0.395 scales to fit exactly within [-1,1]
+			return 0.395 * (n0 + n1);
+		}
+
+		/**
+		 */
+		[Inline]
+		private static function grad(hash:int, x:Number):Number
+		{
+			var h:int = hash & 15;
+			var gradient:Number = 1.0 + (h & 7);   // Gradient value 1.0, 2.0, ..., 8.0
+			if ((h & 8) != 0) gradient = -gradient;         // Set a random sign for the gradient
+			return ( gradient * x );           // Multiply the gradient with the distance
+		}
+
+
 		/**
 		 * Returns number on range [0; 1] by given params.
 		 */
-		public static function noise(p_x:Number, p_y:Number = 1, p_z:Number = 1):Number
+		public static function perlin3d(p_x:Number, p_y:Number = 1, p_z:Number = 1):Number
 		{
 			if (!isInitialized) init();
 
@@ -233,7 +311,7 @@ package vm.math.rand
 		}
 
 		/**
-		 * Fill bitmap of perlin noise.
+		 * Fill bitmap of perlin noise3d.
 		 */
 		public static function fill(p_bitmap:BitmapData, p_x:Number = 0, p_y:Number = 0, p_z:Number = 0):void
 		{
@@ -395,8 +473,8 @@ package vm.math.rand
 		}
 
 		/**
-		 * Should to call if need prepare perlin noise before use.
-		 * But it is not necessary, with first call of 'noise' method, everything will be prepared automatically.
+		 * Should to call if need prepare perlin noise3d before use.
+		 * But it is not necessary, with first call of 'noise3d' method, everything will be prepared automatically.
 		 */
 		public static function init():void
 		{
