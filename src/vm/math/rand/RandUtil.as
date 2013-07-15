@@ -37,6 +37,18 @@ package vm.math.rand
 		}
 
 		/**
+		 * returns un sign int between [0; uint.MAX_VALUE]
+		 */
+		static public function getIntUnsigned():uint
+		{
+			_pSeedUint ^= (_pSeedUint << 21);
+			_pSeedUint ^= (_pSeedUint >>> 35);
+			_pSeedUint ^= (_pSeedUint << 4);
+
+			return _pSeedUint;
+		}
+
+		/**
 		 * Method returns rand float number in given range.
 		 */
 		static public function getFloatRange(min:Number, max:Number):Number
@@ -60,7 +72,7 @@ package vm.math.rand
 		/**
 		 * Method returns rand float number on range (0 < x < 1)
 		 */
-		static public function getFloatUnsign():Number
+		static public function getFloatUnsigned():Number
 		{
 			_pSeedUint ^= (_pSeedUint << 21);
 			_pSeedUint ^= (_pSeedUint >>> 35);
@@ -92,8 +104,8 @@ package vm.math.rand
 			{
 				do
 				{
-					_v1 = getFloatUnsign();
-					_v2 = getFloatUnsign();
+					_v1 = getFloatUnsigned();
+					_v2 = getFloatUnsigned();
 					_v1 = _v1*2 - 1;
 					_v2 = _v2*2 - 1;
 					_r = _v1*_v1 + _v2*_v2;
