@@ -49,6 +49,14 @@ package vm.math.rand
 		}
 
 		/**
+		 *
+		 */
+		public static function getRandRange(min:Number,max:Number=NaN):Number
+		{
+			return Math.random()*(max-min)+min;
+		}
+
+		/**
 		 * Method returns rand float number in given range.
 		 */
 		static public function getFloatRange(min:Number, max:Number):Number

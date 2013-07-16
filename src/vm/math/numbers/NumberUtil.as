@@ -80,6 +80,18 @@ package vm.math.numbers
 			return Math.abs(p_val1 - p_val2) < p_precis;
 		}
 
+		/**
+		 * Converts given number from old range to new range.
+		 * Returns number in new range.
+		 */
+		static public function convertToRange(p_number:Number, p_oldMin:Number, p_oldMax:Number, p_newMin:Number, p_newMax:Number):Number
+		{
+			var oldRange:Number = p_oldMax - p_oldMin;
+			var newRange:Number = p_newMax - p_newMin;
+
+			return (((p_number - p_oldMin) * newRange) / oldRange) + p_newMin;
+		}
+
 		////////
 		static private var periodTable:Array = [];
 
