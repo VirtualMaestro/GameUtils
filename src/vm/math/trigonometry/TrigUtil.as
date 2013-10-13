@@ -29,13 +29,7 @@ package vm.math.trigonometry
 		static public const PI2:Number = Math.PI * 2;
 
 		/**
-		 * Метод вычисляет угол между двумя заданными точками.
-		 *
-		 * @param    x1 - координата Х первой точки.
-		 * @param    y1 - координата Y первой точки.
-		 * @param    x2 - координата Х второй точки.
-		 * @param    y2 - координата Y второй точки.
-		 * @return - Возвращает угол в градусах.
+		 * Returns angle between two points in degrees.
 		 */
 		static public function getAnglePointsDeg(x1:Number, y1:Number, x2:Number, y2:Number):Number
 		{
@@ -46,13 +40,7 @@ package vm.math.trigonometry
 		}
 
 		/**
-		 * Метод вычисляет угол между двумя заданными точками.
-		 *
-		 * @param    x1 - координата Х первой точки.
-		 * @param    y1 - координата Y первой точки.
-		 * @param    x2 - координата Х второй точки.
-		 * @param    y2 - координата Y второй точки.
-		 * @return - Возвращает угол в радианах.
+		 * Returns angle between two points in radians.
 		 */
 		static public function getAnglePointsRad(x1:Number, y1:Number, x2:Number, y2:Number):Number
 		{
@@ -63,8 +51,8 @@ package vm.math.trigonometry
 		}
 
 		/**
-		 * Возвращает угол в радианах между двумя заданными линиями.
-		 * Чтобы получить угол в градусах умножьте полученное значение на константу RAD_TO_DEG.
+		 * Returns angle between two lines.
+		 * Angle in radians, if need in degrees, should to multiply result on RAD_TO_DEG const.
 		 */
 		static public function getAngleLines(startLine1:Point, endLine1:Point, startLine2:Point, endLine2:Point):Number
 		{
@@ -77,31 +65,23 @@ package vm.math.trigonometry
 		}
 
 		/**
-		 * Возвращает косинус альфа между двумя заданными линиями.
-		 * Метод такой же как getAngleLines за исключением того, что не вычисляется арккосинус, тем самым не возвращает угла в радианах.
-		 * Метод может быть полезным когда нет необходимости знать углы, но надо узнать является ли один потенциальный угл больше/меньше другого.
-		 * Чем значение меньше тем угол больше.
-		 * Так как в отличии от getAngleLines метод не рассчитывает арккосинус работает быстрее.
+		 * Method looks like 'getAngleLines' except it doesn't calculate arccos, and not returns angle in radians.
+		 * This method can be helpful when no need to know angles but need to know, e.g., is one angle greater/smaller then another.
+		 * Less value than angle greater.
 		 */
-		static public function getCosALines(startLine1:Point, endLine1:Point, startLine2:Point, endLine2:Point):Number
+		static public function getCosALines(p_startLine1X:Number, p_startLine1Y:Number, p_endLine1X:Number, p_endLine1Y:Number, p_startLine2X:Number,
+		                                    p_startLine2Y:Number, p_endLine2X:Number, p_endLine2Y:Number):Number
 		{
-			var x1:Number = endLine1.x - startLine1.x;
-			var y1:Number = endLine1.y - startLine1.y;
-			var x2:Number = endLine2.x - startLine2.x;
-			var y2:Number = endLine2.y - startLine2.y;
+			var x1:Number = p_endLine1X - p_startLine1X;
+			var y1:Number = p_endLine1Y - p_startLine1Y;
+			var x2:Number = p_endLine2X - p_startLine2X;
+			var y2:Number = p_endLine2Y - p_startLine2Y;
 
 			return (x1 * x2 + y1 * y2) / Math.sqrt((x1 * x1 + y1 * y1) * (x2 * x2 + y2 * y2));
 		}
 
 		/**
-		 * Метод вычисляет расстояние между точками.
-		 *
-		 * @param    x1 - координата Х первой точки.
-		 * @param    y1 - координата Y первой точки.
-		 * @param    x2 - координата Х второй точки.
-		 * @param    y2 - координата Y второй точки.
-		 *
-		 * @return - Возвращает число - расстояние между точками.
+		 * Returns distance between points.
 		 */
 		static public function getDistance(x1:Number, y1:Number, x2:Number, y2:Number):Number
 		{
@@ -112,7 +92,50 @@ package vm.math.trigonometry
 		}
 
 		/**
-		 * Возвращает точку пересечения двух линий.
+		 * Returns square distance between points.
+		 */
+		static public function getDistanceSquare(x1:Number, y1:Number, x2:Number, y2:Number):Number
+		{
+			var xd:Number = x1 - x2;
+			var yd:Number = y1 - y2;
+
+			return xd * xd + yd * yd;
+		}
+
+		/**
+		 * Returns direction of vector.
+		 */
+		static public function getDirection(p_startLineX:Number, p_startLineY:Number, p_endLineX:Number, p_endLineY:Number):Point
+		{
+			var x:Number = p_endLineX - p_startLineX;
+			var y:Number = p_endLineY - p_startLineY;
+			var len:Number = Math.sqrt(x * x + y * y);
+
+			return new Point(x / len, y / len);
+		}
+
+		/**
+		 * Return perpendicular vector to given.
+		 * If normalize = true, vector is normalized.
+		 */
+		static public function getPerpendicular(p_startVectorX:Number, p_startVectorY:Number, p_endVectorX:Number, p_endVectorY:Number,
+		                                        p_isNormalize:Boolean = false):Point
+		{
+			var perpX:Number = -(p_endVectorY - p_startVectorY);
+			var perpY:Number = p_endVectorX - p_startVectorX;
+
+			if (p_isNormalize && (perpX + perpY) != 0)
+			{
+				var len:Number = Math.sqrt(perpX * perpX + perpY * perpY);
+				perpX /= len;
+				perpY /= len;
+			}
+
+			return new Point(perpX, perpY);
+		}
+
+		/**
+		 * Returns point of intersection of two lines.
 		 */
 		static public function getIntersectLines(p1:Point, p2:Point, p3:Point, p4:Point):Point
 		{
@@ -160,7 +183,7 @@ package vm.math.trigonometry
 		}
 
 		/**
-		 * Проверяет пересекаются ли линии.
+		 * Check whether lines are intersected.
 		 */
 		static public function isLinesIntersects(startLine1:Point, endLine1:Point, startLine2:Point, endLine2:Point):Boolean
 		{
