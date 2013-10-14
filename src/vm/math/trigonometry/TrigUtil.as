@@ -31,6 +31,7 @@ package vm.math.trigonometry
 		/**
 		 * Returns angle between two points in degrees.
 		 */
+		[Inline]
 		static public function getAnglePointsDeg(x1:Number, y1:Number, x2:Number, y2:Number):Number
 		{
 			var x:Number = x2 - x1;
@@ -42,6 +43,7 @@ package vm.math.trigonometry
 		/**
 		 * Returns angle between two points in radians.
 		 */
+		[Inline]
 		static public function getAnglePointsRad(x1:Number, y1:Number, x2:Number, y2:Number):Number
 		{
 			var x:Number = x2 - x1;
@@ -54,6 +56,7 @@ package vm.math.trigonometry
 		 * Returns angle between two lines.
 		 * Angle in radians, if need in degrees, should to multiply result on RAD_TO_DEG const.
 		 */
+		[Inline]
 		static public function getAngleLines(startLine1:Point, endLine1:Point, startLine2:Point, endLine2:Point):Number
 		{
 			var x1:Number = endLine1.x - startLine1.x;
@@ -69,6 +72,7 @@ package vm.math.trigonometry
 		 * This method can be helpful when no need to know angles but need to know, e.g., is one angle greater/smaller then another.
 		 * Less value than angle greater.
 		 */
+		[Inline]
 		static public function getCosALines(p_startLine1X:Number, p_startLine1Y:Number, p_endLine1X:Number, p_endLine1Y:Number, p_startLine2X:Number,
 		                                    p_startLine2Y:Number, p_endLine2X:Number, p_endLine2Y:Number):Number
 		{
@@ -83,6 +87,7 @@ package vm.math.trigonometry
 		/**
 		 * Returns distance between points.
 		 */
+		[Inline]
 		static public function getDistance(x1:Number, y1:Number, x2:Number, y2:Number):Number
 		{
 			var xd:Number = x1 - x2;
@@ -94,6 +99,7 @@ package vm.math.trigonometry
 		/**
 		 * Returns square distance between points.
 		 */
+		[Inline]
 		static public function getDistanceSquare(x1:Number, y1:Number, x2:Number, y2:Number):Number
 		{
 			var xd:Number = x1 - x2;
@@ -105,6 +111,7 @@ package vm.math.trigonometry
 		/**
 		 * Returns direction of vector.
 		 */
+		[Inline]
 		static public function getDirection(p_startLineX:Number, p_startLineY:Number, p_endLineX:Number, p_endLineY:Number):Point
 		{
 			var x:Number = p_endLineX - p_startLineX;
@@ -118,6 +125,7 @@ package vm.math.trigonometry
 		 * Return perpendicular vector to given.
 		 * If normalize = true, vector is normalized.
 		 */
+		[Inline]
 		static public function getPerpendicular(p_startVectorX:Number, p_startVectorY:Number, p_endVectorX:Number, p_endVectorY:Number,
 		                                        p_isNormalize:Boolean = false):Point
 		{
