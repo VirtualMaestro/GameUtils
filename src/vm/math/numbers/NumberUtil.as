@@ -8,7 +8,6 @@ package vm.math.numbers
 		/**
 		 * Определяет является ли число четным.
 		 */
-		[Inline]
 		static public function isEven(number:Number):Boolean
 		{
 			return ((number & 1) == 0);
@@ -20,7 +19,6 @@ package vm.math.numbers
 		 * @param value - Заданное число
 		 * @return Возвращает -1.0 если заданное число меньше нуля (value < 0) или 1.0 если число больше или равно нулю (value >=0.0) .
 		 */
-		[Inline]
 		static public function sign(value:Number):Number
 		{
 			return (1.0 - (int(value < 0.0) << 1));
@@ -33,7 +31,6 @@ package vm.math.numbers
 		 * @param value1
 		 * @return Возвращает найменьшее число из двух заданных (value0 и value1).
 		 */
-		[Inline]
 		static public function min(value0:Number, value1:Number):Number
 		{
 			return value0 < value1 ? value0 : value1;
@@ -46,7 +43,6 @@ package vm.math.numbers
 		 * @param value1 - второй параметр
 		 * @return Возврат. большее из двух заданных - value0 и value1
 		 */
-		[Inline]
 		static public function max(value0:Number, value1:Number):Number
 		{
 			return (value0 > value1) ? value0 : value1;
@@ -63,7 +59,6 @@ package vm.math.numbers
 		 * @param value заданное число.
 		 * @return Приведенно число.
 		 */
-		[Inline]
 		static public function rint(value:Number):int
 		{
 			return int(value + 0.5 - Number(value < 0));
@@ -72,7 +67,6 @@ package vm.math.numbers
 		/**
 		 * Проверяет является ли заданное значение не числом :)
 		 */
-		[Inline]
 		static public function isNaN(n:Object):Boolean
 		{
 			return n != n;
@@ -81,7 +75,6 @@ package vm.math.numbers
 		/**
 		 * Проверяет являются ли два заданных числа одинаковыми до заданной точности.
 		 */
-		[Inline]
 		static public function isEqual(p_val1:Number, p_val2:Number, p_precis:Number = 0.001):Boolean
 		{
 			return Math.abs(p_val1 - p_val2) < p_precis;
@@ -91,7 +84,6 @@ package vm.math.numbers
 		 * Converts given number from old range to new range.
 		 * Returns number in new range.
 		 */
-		[Inline]
 		static public function convertToRange(p_number:Number, p_oldMin:Number, p_oldMax:Number, p_newMin:Number, p_newMax:Number):Number
 		{
 			var oldRange:Number = p_oldMax - p_oldMin;
