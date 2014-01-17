@@ -53,7 +53,21 @@ package vm.math.trigonometry
 		}
 
 		/**
-		 * Returns angle between two lines.
+		 * Returns angle between line and point (value always positive because represents absolute angle).
+		 * Angle in radians, if need in degrees, should to multiply result on RAD_TO_DEG const.
+		 */
+		static public function getAngleLinePoint(p_startLine:Point, p_endLine:Point, p_point:Point):Number
+		{
+			var x1:Number = p_endLine.x - p_startLine.x;
+			var y1:Number = p_endLine.y - p_startLine.y;
+			var x2:Number = p_point.x;
+			var y2:Number = p_point.y;
+
+			return Math.acos((x1 * x2 + y1 * y2) / Math.sqrt((x1 * x1 + y1 * y1) * (x2 * x2 + y2 * y2)));
+		}
+
+		/**
+		 * Returns angle between two lines (value always positive because represents absolute angle).
 		 * Angle in radians, if need in degrees, should to multiply result on RAD_TO_DEG const.
 		 */
 		[Inline]
