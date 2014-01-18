@@ -8,48 +8,65 @@ package vm.math.trigonometry
 	public class TrigUtil
 	{
 		/**
-		 * Константа перевода радиан в градусы.
-		 * Приблизительно 57.295779513082320876798154814105
+		 * Constant for convert radian to degrees
+		 * Approximately  57.295779513082320876798154814105
 		 */
 		static public const RAD_TO_DEG:Number = 180.0 / Math.PI;
 
 		/**
-		 * Константа перевода градусов в радианы.
-		 * Приблизительно 0,017453292519943295769236907684886
+		 * Constant for convert degrees to radians
+		 * Approximately 0.017453292519943295769236907684886
 		 */
 		static public const DEG_TO_RAD:Number = Math.PI / 180.0;
 
 		/**
+		 * Constant PI
+		 * Approximately 3.1415926535897932384626433832795
 		 */
 		static public const PI:Number = Math.PI;
 
 		/**
-		 * Константа PI * 2
+		 * Constant 2*PI
+		 * Approximately 6.283185307179586476925286766559
 		 */
 		static public const PI2:Number = Math.PI * 2;
 
 		/**
+		 * Fit angle to range between 0-360 degree.
+		 * Angle in radians.
+		 */
+		static public function fitAngle(p_angle:Number):Number
+		{
+			var pi2:Number = PI2;
+
+			if (p_angle < 0 && p_angle < -pi2)
+			{
+				p_angle %= pi2;
+				p_angle += pi2;
+			}
+			else
+			{
+				if (p_angle < 0) p_angle += pi2;
+				else if (p_angle > pi2) p_angle %= pi2;
+			}
+
+			return p_angle;
+		}
+
+		/**
 		 * Returns angle between two points in degrees.
 		 */
-		[Inline]
-		static public function getAnglePointsDeg(x1:Number, y1:Number, x2:Number, y2:Number):Number
+		static public function getAnglePointsDeg(p_x1:Number, p_y1:Number, p_x2:Number, p_y2:Number):Number
 		{
-			var x:Number = x2 - x1;
-			var y:Number = y2 - y1;
-
-			return Math.atan2(y, x) * RAD_TO_DEG;
+			return Math.atan2(p_y2 - p_y1, p_x2 - p_x1) * RAD_TO_DEG;
 		}
 
 		/**
 		 * Returns angle between two points in radians.
 		 */
-		[Inline]
-		static public function getAnglePointsRad(x1:Number, y1:Number, x2:Number, y2:Number):Number
+		static public function getAnglePointsRad(p_x1:Number, p_y1:Number, p_x2:Number, p_y2:Number):Number
 		{
-			var x:Number = x2 - x1;
-			var y:Number = y2 - y1;
-
-			return Math.atan2(y, x);
+			return Math.atan2(p_y2 - p_y1, p_x2 - p_x1);
 		}
 
 		/**
@@ -70,13 +87,12 @@ package vm.math.trigonometry
 		 * Returns angle between two lines (value always positive because represents absolute angle).
 		 * Angle in radians, if need in degrees, should to multiply result on RAD_TO_DEG const.
 		 */
-		[Inline]
-		static public function getAngleLines(startLine1:Point, endLine1:Point, startLine2:Point, endLine2:Point):Number
+		static public function getAngleLines(p_startLine1:Point, p_endLine1:Point, p_startLine2:Point, p_endLine2:Point):Number
 		{
-			var x1:Number = endLine1.x - startLine1.x;
-			var y1:Number = endLine1.y - startLine1.y;
-			var x2:Number = endLine2.x - startLine2.x;
-			var y2:Number = endLine2.y - startLine2.y;
+			var x1:Number = p_endLine1.x - p_startLine1.x;
+			var y1:Number = p_endLine1.y - p_startLine1.y;
+			var x2:Number = p_endLine2.x - p_startLine2.x;
+			var y2:Number = p_endLine2.y - p_startLine2.y;
 
 			return Math.acos((x1 * x2 + y1 * y2) / Math.sqrt((x1 * x1 + y1 * y1) * (x2 * x2 + y2 * y2)));
 		}
@@ -86,7 +102,6 @@ package vm.math.trigonometry
 		 * This method can be helpful when no need to know angles but need to know, e.g., is one angle greater/smaller then another.
 		 * Less value than angle greater.
 		 */
-		[Inline]
 		static public function getCosALines(p_startLine1X:Number, p_startLine1Y:Number, p_endLine1X:Number, p_endLine1Y:Number, p_startLine2X:Number,
 		                                    p_startLine2Y:Number, p_endLine2X:Number, p_endLine2Y:Number):Number
 		{
@@ -101,11 +116,10 @@ package vm.math.trigonometry
 		/**
 		 * Returns distance between points.
 		 */
-		[Inline]
-		static public function getDistance(x1:Number, y1:Number, x2:Number, y2:Number):Number
+		static public function getDistance(p_x1:Number, p_y1:Number, p_x2:Number, p_y2:Number):Number
 		{
-			var xd:Number = x1 - x2;
-			var yd:Number = y1 - y2;
+			var xd:Number = p_x1 - p_x2;
+			var yd:Number = p_y1 - p_y2;
 
 			return Math.sqrt(xd * xd + yd * yd);
 		}
@@ -113,11 +127,10 @@ package vm.math.trigonometry
 		/**
 		 * Returns square distance between points.
 		 */
-		[Inline]
-		static public function getDistanceSquare(x1:Number, y1:Number, x2:Number, y2:Number):Number
+		static public function getDistanceSquare(p_x1:Number, p_y1:Number, p_x2:Number, p_y2:Number):Number
 		{
-			var xd:Number = x1 - x2;
-			var yd:Number = y1 - y2;
+			var xd:Number = p_x1 - p_x2;
+			var yd:Number = p_y1 - p_y2;
 
 			return xd * xd + yd * yd;
 		}
@@ -125,7 +138,6 @@ package vm.math.trigonometry
 		/**
 		 * Returns direction of vector.
 		 */
-		[Inline]
 		static public function getDirection(p_startLineX:Number, p_startLineY:Number, p_endLineX:Number, p_endLineY:Number):Point
 		{
 			var x:Number = p_endLineX - p_startLineX;
@@ -139,7 +151,6 @@ package vm.math.trigonometry
 		 * Return perpendicular vector to given.
 		 * If normalize = true, vector is normalized.
 		 */
-		[Inline]
 		static public function getPerpendicular(p_startVectorX:Number, p_startVectorY:Number, p_endVectorX:Number, p_endVectorY:Number,
 		                                        p_isNormalize:Boolean = false):Point
 		{
@@ -159,16 +170,16 @@ package vm.math.trigonometry
 		/**
 		 * Returns point of intersection of two lines.
 		 */
-		static public function getIntersectLines(p1:Point, p2:Point, p3:Point, p4:Point):Point
+		static public function getIntersectLines(p_p1:Point, p_p2:Point, p_p3:Point, p_p4:Point):Point
 		{
-			var p1x:Number = p1.x;
-			var p1y:Number = p1.y;
-			var p2x:Number = p2.x;
-			var p2y:Number = p2.y;
-			var p3x:Number = p3.x;
-			var p3y:Number = p3.y;
-			var p4x:Number = p4.x;
-			var p4y:Number = p4.y;
+			var p1x:Number = p_p1.x;
+			var p1y:Number = p_p1.y;
+			var p2x:Number = p_p2.x;
+			var p2y:Number = p_p2.y;
+			var p3x:Number = p_p3.x;
+			var p3y:Number = p_p3.y;
+			var p4x:Number = p_p4.x;
+			var p4y:Number = p_p4.y;
 
 			var p1xSp2x:Number = p1x - p2x;
 			var p1ySp2y:Number = p1y - p2y;
@@ -207,16 +218,16 @@ package vm.math.trigonometry
 		/**
 		 * Check whether lines are intersected.
 		 */
-		static public function isLinesIntersects(startLine1:Point, endLine1:Point, startLine2:Point, endLine2:Point):Boolean
+		static public function isLinesIntersects(p_startLine_1:Point, p_endLine_1:Point, p_startLine_2:Point, p_endLine_2:Point):Boolean
 		{
-			var p1x:Number = startLine1.x;
-			var p1y:Number = startLine1.y;
-			var p2x:Number = endLine1.x;
-			var p2y:Number = endLine1.y;
-			var p3x:Number = startLine2.x;
-			var p3y:Number = startLine2.y;
-			var p4x:Number = endLine2.x;
-			var p4y:Number = endLine2.y;
+			var p1x:Number = p_startLine_1.x;
+			var p1y:Number = p_startLine_1.y;
+			var p2x:Number = p_endLine_1.x;
+			var p2y:Number = p_endLine_1.y;
+			var p3x:Number = p_startLine_2.x;
+			var p3y:Number = p_startLine_2.y;
+			var p4x:Number = p_endLine_2.x;
+			var p4y:Number = p_endLine_2.y;
 
 			var p1xSp2x:Number = p1x - p2x;
 			var p1ySp2y:Number = p1y - p2y;
@@ -247,18 +258,19 @@ package vm.math.trigonometry
 		}
 
 		/**
+		 * Determines if rectangles are intersected.
 		 */
-		static public function isRectanglesIntersect(topLeft1:Point, bottomRight1:Point, topLeft2:Point, bottomRight2:Point):Boolean
+		static public function isRectanglesIntersect(p_topLeft_1:Point, p_bottomRight_1:Point, p_topLeft_2:Point, p_bottomRight_2:Point):Boolean
 		{
-			var ltx1:Number = topLeft1.x;
-			var lty1:Number = topLeft1.y;
-			var rbx1:Number = bottomRight1.x;
-			var rby1:Number = bottomRight1.y;
+			var ltx1:Number = p_topLeft_1.x;
+			var lty1:Number = p_topLeft_1.y;
+			var rbx1:Number = p_bottomRight_1.x;
+			var rby1:Number = p_bottomRight_1.y;
 
-			var ltx2:Number = topLeft2.x;
-			var lty2:Number = topLeft2.y;
-			var rbx2:Number = bottomRight2.x;
-			var rby2:Number = bottomRight2.y;
+			var ltx2:Number = p_topLeft_2.x;
+			var lty2:Number = p_topLeft_2.y;
+			var rbx2:Number = p_bottomRight_2.x;
+			var rby2:Number = p_bottomRight_2.y;
 
 			var exp:Boolean = false;
 
