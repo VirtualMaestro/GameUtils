@@ -39,16 +39,12 @@ package vm.math.trigonometry
 		{
 			var pi2:Number = PI2;
 
-			if (p_angle < 0 && p_angle < -pi2)
+			if (p_angle < 0)
 			{
-				p_angle %= pi2;
+				if (p_angle < -pi2) p_angle %= pi2;
 				p_angle += pi2;
 			}
-			else
-			{
-				if (p_angle < 0) p_angle += pi2;
-				else if (p_angle > pi2) p_angle %= pi2;
-			}
+			else if (p_angle > pi2) p_angle %= pi2;
 
 			return p_angle;
 		}
